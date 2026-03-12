@@ -22,12 +22,12 @@ User message
     │       ↓ YES
     │
     ├─ Stage 1 — Group prediction          predict_groups()
-    │       Claude picks 2–3 disease groups out of 22
+    │       Picks 2–3 disease groups out of 22
     │       Score: 0.7 × symptom_overlap + 0.3 × location_match
     │       Fallback: all diseases if result < 3
     │       ↓
     ├─ Stage 2 — Disease reasoning         reason_over_diseases()
-    │       Claude ranks top 3 conditions from filtered list
+    │       Ranks top 3 conditions from filtered list
     │       Returns: name, confidence (0–1), reason, next_questions
     │       Image (if provided) is passed here as base64
     │       ↓
