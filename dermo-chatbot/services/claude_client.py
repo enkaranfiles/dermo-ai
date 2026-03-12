@@ -44,37 +44,78 @@ def reason_over_diseases(
     """
     diseases_text = json.dumps(all_diseases, ensure_ascii=False, indent=2)
 
-    prompt = f"""Sen bir dermatoloji bilgi asistanısın.
+    prompt = f"""Sen temkinli ve kullanıcı odaklı çalışan bir dermatoloji bilgi asistanısın.
 
-Aşağıdaki semptom bilgilerine göre verilen hastalık listesinden en olası 3 hastalığı seç.
-Görüntü varsa görüntüden elde ettiğin gözlemleri de dikkate al.
+Görevin kesin teşhis koymak değildir.
+Görevin, verilen semptom bilgileri ve varsa görüntü gözlemleri üzerinden,
+sağlanan hastalık listesi içinden en olası dermatolojik durumları sıralamaktır.
 
-ÖNEMLİ: Bu bir tıbbi teşhis değildir. Yalnızca bilgilendirme amaçlıdır.
+KLİNİK YAKLAŞIM:
+- Önce semptom örüntüsünü değerlendir.
+- Lezyonun tipi, şekli, rengi, dağılımı, yerleşimi, süresi, büyüme hızı, kaşıntı/yanma/ağrı, akıntı, kanama, kabuklanma, kabarcık varlığı gibi ipuçlarını kullan.
+- Görüntü varsa yalnızca görüntüde gerçekten seçilebilen özellikleri dikkate al; emin olmadığın görsel özellikleri varsayma.
+- Verilen hastalık listesi dışına çıkma.
+- Belirsizlik varsa bunu confidence değerine yansıt.
+- Benign, inflamatuar veya enfeksiyöz açıklamalar güçlü ise; yalnızca yeterli bulgu olduğunda malign / yüksek riskli durumları üst sıralara taşı.
+- Yüzde görülen akut inflamatuar, sivilce benzeri veya irinli lezyonlarda; güçlü malignite bulguları yoksa önce akne, rosacea, enfeksiyon veya benign inflamatuar nedenleri değerlendir.
+- Maligniteyi ancak şu tip güçlü ipuçlarında üst sıralara taşı: uzun süreli iyileşmeyen lezyon, tekrarlayan kanama, belirgin ülserasyon, inci görünüm, düzensiz sınır, belirgin renk değişimi, hızlı ve açıklanamayan büyüme.
+- Kullanıcıya panik yaratacak gereksiz kesin ifadeler kullanma.
+- Bu çıktı bilgilendirme amaçlıdır; kesin tanı dili kullanma.
+
+ÖNEMLİ SINIRLAR:
+- Bu bir tıbbi teşhis değildir.
+- Yalnızca verilen hastalık listesinden seçim yap.
+- Hastalık isimlerini tıbbi olarak doğru kullan.
+- Gerekçe kısa, net ve Türkçe olmalı.
+- next_questions alanındaki sorular gerçekten ayırıcı tanıya yardımcı, hedefli ve kısa olmalı; öncelikle mevcut aday hastalıkları birbirinden ayıracak sorular sor (dağılım, süre, kaşıntı/yanma farkı, kabarcık varlığı, tek taraflılık, halka şekli, pullanma, kanama gibi).
+- Gereksiz genel sorular sorma.
+- Aynı bilgiyi tekrar eden soru sorma.
+- Confidence değeri, olasılık sıralaması içindir; kesinlik anlamına gelmez.
 
 SEMPTOM DURUMU:
 {symptoms_text}
 
-HASTALIK LİSTESİ (15 adet):
+HASTALIK LİSTESİ:
 {diseases_text}
 
-ÇIKTI KURALLARI:
-- En olası 3 hastalığı seç
-- confidence: 0.0–1.0 arası (toplam 1.0 olması gerekmez)
-- reason: Türkçe, kısa gerekçe (1-2 cümle)
-- next_questions: Tanıyı netleştirmek için 2-3 hedefe yönelik tıbbi soru
+GÖREV:
+Verilen hastalık listesi içinden semptomlara en çok uyan 3 hastalığı seç.
+Her biri için kısa bir Türkçe gerekçe yaz.
+Tanıyı netleştirmeye en çok yardımcı olacak 2 veya 3 kısa hedefli soru üret.
 
-YALNIZCA geçerli JSON döndür, başka hiçbir şey ekleme:
+ÇIKTI KURALLARI:
+- En fazla 3 hastalık seç
+- Yalnızca verilen listedeki hastalık adlarını kullan
+- confidence: 0.0 ile 1.0 arasında sayı
+- reason: Türkçe, kısa, 1-2 cümle
+- next_questions: Türkçe, kısa, ayırıcı tanıya yardımcı 2-3 soru
+- Ek açıklama yazma
+- Markdown kullanma
+- Yalnızca geçerli JSON döndür
+
+JSON formatı:
 {{
   "conditions": [
     {{
-      "name": "Hastalık Adı",
+      "name": "...",
       "confidence": 0.82,
-      "reason": "Bu hastalığın neden olası olduğunu açıkla"
+      "reason": "..."
+    }},
+    {{
+      "name": "...",
+      "confidence": 0.61,
+      "reason": "..."
+    }},
+    {{
+      "name": "...",
+      "confidence": 0.37,
+      "reason": "..."
     }}
   ],
   "next_questions": [
     "Soru 1?",
-    "Soru 2?"
+    "Soru 2?",
+    "Soru 3?"
   ]
 }}"""
 
@@ -229,7 +270,17 @@ def predict_groups(symptoms_text: str, groups: list[dict]) -> list[int]:
     import re
     groups_text = json.dumps(groups, ensure_ascii=False, indent=2)
 
-    prompt = f"""Sen bir dermatoloji uzmanısın. Verilen semptomlara göre hangi hastalık gruplarının daha olası olduğunu belirle.
+    prompt = f"""Sen temkinli çalışan bir dermatoloji bilgi asistanısın.
+Görevin kesin teşhis koymak değil, verilen semptomlardan yola çıkarak
+en olası hastalık gruplarını belirlemektir.
+
+KLİNİK YAKLAŞIM:
+- Önce semptom örüntüsünü değerlendir.
+- Lezyon tipi, dağılım, yerleşim, süre, kaşıntı/yanma/ağrı, büyüme, akıntı, kabarcık, renk değişimi gibi ipuçlarını dikkate al.
+- Belirsizlik varsa en olası 2-3 grubu seç.
+- Yalnızca güçlü kanıt varsa malign veya yüksek riskli grupları öne çıkar.
+- İnflamatuar, enfeksiyöz veya benign açıklamalar güçlü görünüyorsa onları önce değerlendir.
+- Bu aşamada hastalık adı değil, yalnızca grup seçimi yap.
 
 SEMPTOM DURUMU:
 {symptoms_text}
@@ -237,10 +288,18 @@ SEMPTOM DURUMU:
 HASTALIK GRUPLARI:
 {groups_text}
 
-En olası 2-3 grubu seç. Yalnızca aşağıdaki JSON formatında yanıt ver:
-{{
-  "group_ids": [1, 5]
-}}"""
+GÖREV:
+Yukarıdaki semptom bilgilerine göre en olası 2 veya 3 hastalık grubunu seç.
+
+ÇIKTI KURALLARI:
+- Sadece verilen grup kimliklerinden seç
+- En fazla 3 grup seç
+- Açıklama yazma
+- Ek metin yazma
+- Yalnızca geçerli JSON döndür
+
+JSON formatı:
+{{"group_ids": [1, 5, 9]}}"""
 
     response = client.messages.create(
         model=MODEL,
