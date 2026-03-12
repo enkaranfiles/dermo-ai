@@ -566,6 +566,18 @@ function App() {
                 <div className="message-content">{renderMessageContent(message.content)}</div>
               </article>
             ))}
+            {isLoading ? (
+              <article className="message assistant typing-message" aria-live="polite">
+                <div className="typing-indicator" aria-label="Yaziyor">
+                  <span className="typing-label">Yaziyor</span>
+                  <span className="typing-ellipsis" aria-hidden="true">
+                    <i>.</i>
+                    <i>.</i>
+                    <i>.</i>
+                  </span>
+                </div>
+              </article>
+            ) : null}
             <div ref={messagesEndRef} />
           </div>
 
