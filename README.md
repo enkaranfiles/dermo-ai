@@ -1,6 +1,6 @@
 # Dermo-AI
 
-A Turkish-language dermatology information chatbot. Collects symptoms through conversation, then reasons over a curated disease database to surface the most likely conditions.
+Collects symptoms through conversation, then reasons over a curated disease database to surface the most likely conditions.
 
 > **Not a medical diagnosis tool.** For informational purposes only.
 
