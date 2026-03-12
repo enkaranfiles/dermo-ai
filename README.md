@@ -22,9 +22,9 @@ User message
     │       ↓ YES
     │
     ├─ Stage 1 — Group prediction          predict_groups()
-    │       Picks 2–3 disease groups out of 22
-    │       Score: 0.7 × symptom_overlap + 0.3 × location_match
-    │       Fallback: all diseases if result < 3
+    │       Selects 2–3 groups from 23 group names
+    │       Input: SymptomState text + group list
+    │       Fallback: all 47 diseases if result < 3
     │       ↓
     ├─ Stage 2 — Disease reasoning         reason_over_diseases()
     │       Ranks top 3 conditions from filtered list
