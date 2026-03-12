@@ -1,7 +1,7 @@
 """Manages the multi-turn conversation state and system prompt."""
 
 from dataclasses import dataclass, field
-from typing import Optional
+from typing import ClassVar, Optional
 
 from services.symptom_parser import SymptomState
 
@@ -89,7 +89,7 @@ class ConversationManager:
 
     # Group-specific targeted questions (group_id → question list)
     # Each entry targets intra-group differential: most discriminating questions first.
-    _GROUP_QUESTIONS: dict[int, list[str]] = {
+    _GROUP_QUESTIONS: ClassVar[dict[int, list[str]]] = {
 
         # ── 1. Akne ve Rozasea ──────────────────────────────────────────
         # Akne vulgaris vs Rozasea
