@@ -1,0 +1,874 @@
+[
+  {
+    "id": "akne_vulgaris",
+    "name": "Akne Vulgaris",
+    "group": "Akne ve Rozasea",
+    "group_id": 1,
+    "symptoms": [
+      "sivilce",
+      "siyah nokta",
+      "beyaz nokta",
+      "papül",
+      "püstül",
+      "nodül",
+      "kist",
+      "yağlı cilt",
+      "iltihaplı lezyon",
+      "iz bırakma"
+    ],
+    "locations": ["yüz", "sırt", "göğüs", "omuz", "boyun"],
+    "risk_level": "düşük",
+    "description": "Kıl foliküllerinin tıkanması ve iltihaplanması sonucu oluşan, en yaygın deri hastalığı."
+  },
+  {
+    "id": "rozasea",
+    "name": "Rozasea",
+    "group": "Akne ve Rozasea",
+    "group_id": 1,
+    "symptoms": [
+      "yüzde kızarıklık",
+      "yüzde yanma",
+      "görünür damarlar",
+      "papül",
+      "püstül",
+      "göz irritasyonu",
+      "burun büyümesi",
+      "sıcak basması",
+      "hassas cilt"
+    ],
+    "locations": ["yüz", "burun", "yanak", "alın", "çene"],
+    "risk_level": "düşük",
+    "description": "Yüzde kronik kızarıklık, görünür damarlar ve iltihaplı lezyonlarla seyreden kronik deri hastalığı."
+  },
+  {
+    "id": "aktinik_keratoz",
+    "name": "Aktinik Keratoz",
+    "group": "Aktinik Keratoz, Bazal Hücreli Karsinom ve Diğer Malign Lezyonlar",
+    "group_id": 2,
+    "symptoms": [
+      "pürüzlü yama",
+      "kabuklu lezyon",
+      "kırmızı yama",
+      "kahverengi lezyon",
+      "zımpara hissi",
+      "pullanma",
+      "yanma hissi",
+      "ağrısız lezyon"
+    ],
+    "locations": ["yüz", "saçlı deri", "el sırtı", "kulak", "dudak", "ön kol"],
+    "risk_level": "orta",
+    "description": "Güneş hasarına bağlı prekanseröz deri lezyonu; tedavi edilmezse skuamöz hücreli karsinoma ilerleyebilir."
+  },
+  {
+    "id": "bazal_hucreli_karsinom",
+    "name": "Bazal Hücreli Karsinom",
+    "group": "Aktinik Keratoz, Bazal Hücreli Karsinom ve Diğer Malign Lezyonlar",
+    "group_id": 2,
+    "symptoms": [
+      "inci gibi parlak nodül",
+      "iyileşmeyen yara",
+      "kabuklanma",
+      "kanama",
+      "kenar yükselmesi",
+      "ülserasyon",
+      "şeffaf papül",
+      "telenjiektazi"
+    ],
+    "locations": ["yüz", "burun", "kulak", "boyun", "saçlı deri", "omuz"],
+    "risk_level": "yüksek",
+    "description": "En sık görülen deri kanseri türü; yavaş büyür, nadiren metastaz yapar ancak lokal yıkım yapabilir."
+  },
+  {
+    "id": "skuamoz_hucreli_karsinom",
+    "name": "Skuamöz Hücreli Karsinom",
+    "group": "Aktinik Keratoz, Bazal Hücreli Karsinom ve Diğer Malign Lezyonlar",
+    "group_id": 2,
+    "symptoms": [
+      "sert kırmızı nodül",
+      "pullu yama",
+      "ülserasyon",
+      "kabuklanma",
+      "iyileşmeyen yara",
+      "kanama",
+      "hızlı büyüme",
+      "ağrı"
+    ],
+    "locations": ["yüz", "kulak", "dudak", "el sırtı", "ön kol", "saçlı deri"],
+    "risk_level": "yüksek",
+    "description": "Epidermisin skuamöz hücrelerinden kaynaklanan, metastaz potansiyeli olan deri kanseri."
+  },
+  {
+    "id": "atopik_dermatit",
+    "name": "Atopik Dermatit",
+    "group": "Atopik Dermatit",
+    "group_id": 3,
+    "symptoms": [
+      "yoğun kaşıntı",
+      "kuru cilt",
+      "kızarıklık",
+      "pullanma",
+      "çatlak cilt",
+      "sızıntı",
+      "kabuklanma",
+      "kalınlaşma",
+      "likenifikasyon"
+    ],
+    "locations": ["dirsek iç kıvrımı", "diz arkası", "yüz", "boyun", "el", "bilek", "ayak bileği"],
+    "risk_level": "düşük",
+    "description": "Kronik, tekrarlayıcı, kaşıntılı inflamatuar deri hastalığı; genellikle çocuklukta başlar."
+  },
+  {
+    "id": "pemfigus_vulgaris",
+    "name": "Pemfigus Vulgaris",
+    "group": "Büllöz Hastalıklar",
+    "group_id": 4,
+    "symptoms": [
+      "gevşek bül",
+      "ağız içi ülser",
+      "ağrılı erozyon",
+      "kabuklanma",
+      "nikolsky belirtisi pozitif",
+      "yutma güçlüğü",
+      "sızıntılı yara",
+      "cilt soyulması"
+    ],
+    "locations": ["ağız içi", "gövde", "koltuk altı", "kasık", "saçlı deri", "yüz"],
+    "risk_level": "yüksek",
+    "description": "Deri ve mukozalarda ağrılı büller oluşturan, otoimmün büllöz deri hastalığı."
+  },
+  {
+    "id": "bulloz_pemfigoid",
+    "name": "Büllöz Pemfigoid",
+    "group": "Büllöz Hastalıklar",
+    "group_id": 4,
+    "symptoms": [
+      "gergin bül",
+      "kaşıntı",
+      "kızarık plak",
+      "ürtikeryal lezyon",
+      "sıvı dolu kabarcık",
+      "erozyon",
+      "kabuklanma"
+    ],
+    "locations": ["gövde", "kol", "bacak", "koltuk altı", "kasık", "karın"],
+    "risk_level": "orta",
+    "description": "Yaşlılarda sık görülen, gergin büller ile karakterize otoimmün büllöz hastalık."
+  },
+  {
+    "id": "selulit",
+    "name": "Selülit",
+    "group": "Selülit, İmpetigo ve Diğer Bakteriyel Enfeksiyonlar",
+    "group_id": 5,
+    "symptoms": [
+      "kızarıklık",
+      "şişlik",
+      "sıcaklık artışı",
+      "ağrı",
+      "hassasiyet",
+      "ateş",
+      "kırmızı yayılma",
+      "titreme",
+      "lenf nodu büyümesi"
+    ],
+    "locations": ["alt bacak", "yüz", "kol", "ayak", "göz çevresi"],
+    "risk_level": "orta",
+    "description": "Derinin derin tabakalarını etkileyen, hızlı yayılabilen bakteriyel enfeksiyon."
+  },
+  {
+    "id": "impetigo",
+    "name": "İmpetigo",
+    "group": "Selülit, İmpetigo ve Diğer Bakteriyel Enfeksiyonlar",
+    "group_id": 5,
+    "symptoms": [
+      "bal rengi kabuk",
+      "kırmızı yara",
+      "vezikül",
+      "sızıntı",
+      "kaşıntı",
+      "ağrısız lezyon",
+      "hızlı yayılma",
+      "bül"
+    ],
+    "locations": ["yüz", "burun çevresi", "ağız çevresi", "kol", "bacak", "el"],
+    "risk_level": "düşük",
+    "description": "Çocuklarda sık görülen, bulaşıcı yüzeyel bakteriyel deri enfeksiyonu."
+  },
+  {
+    "id": "follikulit",
+    "name": "Follikülit",
+    "group": "Selülit, İmpetigo ve Diğer Bakteriyel Enfeksiyonlar",
+    "group_id": 5,
+    "symptoms": [
+      "kıl dibi iltihabı",
+      "kırmızı papül",
+      "püstül",
+      "kaşıntı",
+      "hassasiyet",
+      "ağrı",
+      "küçük sivilce benzeri lezyon"
+    ],
+    "locations": ["saçlı deri", "yüz", "bacak", "kol", "göğüs", "sırt", "kalça"],
+    "risk_level": "düşük",
+    "description": "Kıl foliküllerinin bakteriyel veya fungal enfeksiyonu sonucu oluşan iltihap."
+  },
+  {
+    "id": "nummular_egzama",
+    "name": "Nümmüler Egzama",
+    "group": "Egzama",
+    "group_id": 6,
+    "symptoms": [
+      "yuvarlak plak",
+      "madeni para şeklinde lezyon",
+      "kaşıntı",
+      "kızarıklık",
+      "pullanma",
+      "sızıntı",
+      "kabuklanma",
+      "kuru yama"
+    ],
+    "locations": ["bacak", "kol", "gövde", "el sırtı"],
+    "risk_level": "düşük",
+    "description": "Madeni para şeklinde, keskin sınırlı, kaşıntılı egzama plaklarıyla karakterize kronik dermatit."
+  },
+  {
+    "id": "dishidrotik_egzama",
+    "name": "Dishidrotik Egzama",
+    "group": "Egzama",
+    "group_id": 6,
+    "symptoms": [
+      "küçük vezikül",
+      "yoğun kaşıntı",
+      "yanma",
+      "soyulma",
+      "çatlak",
+      "su dolu kabarcık",
+      "kızarıklık",
+      "pullanma"
+    ],
+    "locations": ["el ayası", "parmak kenarları", "ayak tabanı"],
+    "risk_level": "düşük",
+    "description": "El ve ayaklarda küçük, kaşıntılı veziküller ile seyreden tekrarlayıcı egzama türü."
+  },
+  {
+    "id": "ilac_erupsiyonu",
+    "name": "İlaç Erüpsiyonu",
+    "group": "Egzantemler ve İlaç Erüpsiyonları",
+    "group_id": 7,
+    "symptoms": [
+      "yaygın döküntü",
+      "makülopapüler lezyon",
+      "kaşıntı",
+      "kızarıklık",
+      "ateş",
+      "ürtiker",
+      "hedef lezyon",
+      "mukozal tutulum"
+    ],
+    "locations": ["gövde", "kol", "bacak", "yüz", "tüm vücut"],
+    "risk_level": "orta",
+    "description": "İlaç kullanımına bağlı gelişen, hafiften ciddi tablolara kadar değişen deri reaksiyonları."
+  },
+  {
+    "id": "viral_egzantem",
+    "name": "Viral Egzantem",
+    "group": "Egzantemler ve İlaç Erüpsiyonları",
+    "group_id": 7,
+    "symptoms": [
+      "yaygın döküntü",
+      "ateş",
+      "maküler lezyon",
+      "papül",
+      "kırmızı döküntü",
+      "halsizlik",
+      "boğaz ağrısı",
+      "lenf nodu büyümesi"
+    ],
+    "locations": ["gövde", "yüz", "kol", "bacak", "tüm vücut"],
+    "risk_level": "düşük",
+    "description": "Viral enfeksiyonlara bağlı gelişen, genellikle yaygın deri döküntüsü ile seyreden tablo."
+  },
+  {
+    "id": "alopesi_areata",
+    "name": "Alopesi Areata",
+    "group": "Saç Dökülmesi, Alopesi ve Diğer Saç Hastalıkları",
+    "group_id": 8,
+    "symptoms": [
+      "yuvarlak saç dökülme alanı",
+      "ani saç kaybı",
+      "düzgün sınırlı kel alan",
+      "ünlem işareti saçlar",
+      "tırnak değişiklikleri",
+      "saç incelmesi"
+    ],
+    "locations": ["saçlı deri", "sakal bölgesi", "kaş", "kirpik"],
+    "risk_level": "düşük",
+    "description": "Otoimmün mekanizmayla gelişen, lokalize veya yaygın saç kaybına neden olan hastalık."
+  },
+  {
+    "id": "androgenetik_alopesi",
+    "name": "Androgenetik Alopesi",
+    "group": "Saç Dökülmesi, Alopesi ve Diğer Saç Hastalıkları",
+    "group_id": 8,
+    "symptoms": [
+      "ilerleyici saç incelmesi",
+      "alın saç çizgisi gerileme",
+      "tepe bölgesinde seyrelme",
+      "yavaş saç kaybı",
+      "ince kıl yapısı",
+      "saçlı deri görünürlüğü"
+    ],
+    "locations": ["saçlı deri tepe", "alın saç çizgisi", "şakak"],
+    "risk_level": "düşük",
+    "description": "Genetik ve hormonal faktörlere bağlı, en sık görülen saç dökülmesi türü."
+  },
+  {
+    "id": "herpes_simpleks",
+    "name": "Herpes Simpleks",
+    "group": "Herpes, HPV ve Diğer Cinsel Yolla Bulaşan Hastalıklar",
+    "group_id": 9,
+    "symptoms": [
+      "ağrılı vezikül grubu",
+      "yanma hissi",
+      "karıncalanma",
+      "kızarık taban üzerinde kabarcık",
+      "ülserasyon",
+      "kabuklanma",
+      "ateş",
+      "lenf nodu büyümesi"
+    ],
+    "locations": ["dudak", "ağız çevresi", "genital bölge", "kalça", "parmak"],
+    "risk_level": "düşük",
+    "description": "Herpes simpleks virüsünün neden olduğu, tekrarlayıcı ağrılı veziküller ile seyreden enfeksiyon."
+  },
+  {
+    "id": "kondiloma_akuminatum",
+    "name": "Kondiloma Akuminatum (Genital Siğil)",
+    "group": "Herpes, HPV ve Diğer Cinsel Yolla Bulaşan Hastalıklar",
+    "group_id": 9,
+    "symptoms": [
+      "karnabahar görünümlü lezyon",
+      "yumuşak papül",
+      "cilt renkli çıkıntı",
+      "kaşıntı",
+      "nemli lezyon",
+      "küme halinde lezyon",
+      "ağrısız büyüme"
+    ],
+    "locations": ["genital bölge", "perianal bölge", "kasık", "uyluk iç kısım"],
+    "risk_level": "orta",
+    "description": "HPV'nin neden olduğu, genital bölgede görülen bulaşıcı siğil lezyonları."
+  },
+  {
+    "id": "vitiligo",
+    "name": "Vitiligo",
+    "group": "Işık Hastalıkları ve Pigmentasyon Bozuklukları",
+    "group_id": 10,
+    "symptoms": [
+      "beyaz yama",
+      "pigment kaybı",
+      "simetrik beyaz leke",
+      "keskin sınırlı depigmentasyon",
+      "saç beyazlaması",
+      "yayılma eğilimi"
+    ],
+    "locations": ["yüz", "el", "bilek", "dirsek", "diz", "genital bölge", "ağız çevresi", "göz çevresi"],
+    "risk_level": "düşük",
+    "description": "Melanosit kaybına bağlı, ciltte belirgin beyaz yamalar oluşturan otoimmün pigmentasyon bozukluğu."
+  },
+  {
+    "id": "melazma",
+    "name": "Melazma",
+    "group": "Işık Hastalıkları ve Pigmentasyon Bozuklukları",
+    "group_id": 10,
+    "symptoms": [
+      "kahverengi leke",
+      "simetrik hiperpigmentasyon",
+      "düzensiz sınırlı koyu yama",
+      "güneşle koyulaşma",
+      "yüzde maske görünümü"
+    ],
+    "locations": ["yanak", "alın", "burun sırtı", "üst dudak", "çene"],
+    "risk_level": "düşük",
+    "description": "Yüzde simetrik kahverengi lekelere neden olan, hormonal ve güneş maruziyeti ile ilişkili hiperpigmentasyon."
+  },
+  {
+    "id": "kutanoz_lupus",
+    "name": "Kutanöz Lupus Eritematozus",
+    "group": "Lupus ve Diğer Bağ Dokusu Hastalıkları",
+    "group_id": 11,
+    "symptoms": [
+      "kelebek döküntüsü",
+      "diskoid plak",
+      "fotosensitivite",
+      "skarlı alopesi",
+      "atrofi",
+      "eritem",
+      "pullanma",
+      "hiperpigmentasyon"
+    ],
+    "locations": ["yüz", "yanak", "burun", "saçlı deri", "kulak", "boyun", "kol"],
+    "risk_level": "orta",
+    "description": "Lupus eritematozusun deri tutulumu; diskoid lezyonlar ve kelebek döküntüsü ile karakterizedir."
+  },
+  {
+    "id": "dermatomiyozit",
+    "name": "Dermatomiyozit",
+    "group": "Lupus ve Diğer Bağ Dokusu Hastalıkları",
+    "group_id": 11,
+    "symptoms": [
+      "heliotrope döküntü",
+      "Gottron papülleri",
+      "mor renk değişikliği",
+      "kas güçsüzlüğü",
+      "kas ağrısı",
+      "göz kapağı ödemi",
+      "tırnak kenarı eritem",
+      "fotosensitivite"
+    ],
+    "locations": ["göz kapağı", "el eklem sırtı", "dirsek", "diz", "boyun", "göğüs üst kısmı", "sırt"],
+    "risk_level": "yüksek",
+    "description": "Deri ve kasları etkileyen, karakteristik mor döküntü ve kas güçsüzlüğü ile seyreden otoimmün hastalık."
+  },
+  {
+    "id": "melanom",
+    "name": "Melanom",
+    "group": "Melanom, Deri Kanseri, Nevüs ve Benler",
+    "group_id": 12,
+    "symptoms": [
+      "asimetrik lezyon",
+      "düzensiz sınır",
+      "renk değişimi",
+      "hızlı büyüme",
+      "koyu lezyon",
+      "büyüyen ben",
+      "kanama",
+      "kabuklanma"
+    ],
+    "locations": ["kol", "bacak", "sırt", "yüz", "boyun", "göğüs"],
+    "risk_level": "yüksek",
+    "description": "Melanositlerden kaynaklanan, en tehlikeli deri kanseri türü."
+  },
+  {
+    "id": "melanositik_nevus",
+    "name": "Melanositik Nevüs",
+    "group": "Melanom, Deri Kanseri, Nevüs ve Benler",
+    "group_id": 12,
+    "symptoms": [
+      "düzgün sınırlı ben",
+      "homojen renk",
+      "simetrik lezyon",
+      "yavaş büyüme",
+      "papül veya makül",
+      "kahverengi lezyon",
+      "stabil boyut"
+    ],
+    "locations": ["tüm vücut", "yüz", "gövde", "kol", "bacak"],
+    "risk_level": "düşük",
+    "description": "Melanositlerden oluşan, genellikle iyi huylu deri lezyonu; düzenli takip önerilir."
+  },
+  {
+    "id": "onikomikoz",
+    "name": "Onikomikoz",
+    "group": "Tırnak Mantarı ve Diğer Tırnak Hastalıkları",
+    "group_id": 13,
+    "symptoms": [
+      "tırnak kalınlaşması",
+      "tırnak renk değişikliği",
+      "sarı tırnak",
+      "tırnak kırılganlığı",
+      "tırnak altı birikinti",
+      "tırnak şekil bozukluğu",
+      "tırnak ayrılması"
+    ],
+    "locations": ["ayak tırnağı", "el tırnağı", "başparmak tırnağı"],
+    "risk_level": "düşük",
+    "description": "Tırnakların fungal enfeksiyonu; kalınlaşma, renk değişikliği ve kırılganlığa neden olur."
+  },
+  {
+    "id": "paronisi",
+    "name": "Paronişi",
+    "group": "Tırnak Mantarı ve Diğer Tırnak Hastalıkları",
+    "group_id": 13,
+    "symptoms": [
+      "tırnak kenarı şişliği",
+      "kızarıklık",
+      "ağrı",
+      "hassasiyet",
+      "irin",
+      "tırnak çevresi iltihabı",
+      "sıcaklık hissi"
+    ],
+    "locations": ["el parmağı tırnak kenarı", "ayak parmağı tırnak kenarı"],
+    "risk_level": "düşük",
+    "description": "Tırnak çevresi dokularının akut veya kronik iltihabı."
+  },
+  {
+    "id": "alerjik_kontakt_dermatit",
+    "name": "Alerjik Kontakt Dermatit",
+    "group": "Kontakt Dermatit",
+    "group_id": 14,
+    "symptoms": [
+      "kaşıntı",
+      "kızarıklık",
+      "vezikül",
+      "sızıntı",
+      "kabuklanma",
+      "şişlik",
+      "papül",
+      "temas bölgesinde döküntü",
+      "lineer lezyon"
+    ],
+    "locations": ["el", "yüz", "boyun", "bilek", "karın", "ayak", "kulak"],
+    "risk_level": "düşük",
+    "description": "Alerjen maddeyle tekrarlayan temasa bağlı gecikmiş tip aşırı duyarlılık reaksiyonu."
+  },
+  {
+    "id": "irritan_kontakt_dermatit",
+    "name": "İrritan Kontakt Dermatit",
+    "group": "Kontakt Dermatit",
+    "group_id": 14,
+    "symptoms": [
+      "kuruluk",
+      "çatlak",
+      "kızarıklık",
+      "yanma hissi",
+      "pullanma",
+      "soyulma",
+      "ağrı",
+      "kaşıntı"
+    ],
+    "locations": ["el", "parmak", "ön kol", "yüz"],
+    "risk_level": "düşük",
+    "description": "Tahriş edici maddelerle doğrudan temasa bağlı, non-immünolojik deri iltihabı."
+  },
+  {
+    "id": "psoriazis_vulgaris",
+    "name": "Psoriazis Vulgaris",
+    "group": "Psoriazis, Liken Planus ve İlişkili Hastalıklar",
+    "group_id": 15,
+    "symptoms": [
+      "gümüş beyaz skuam",
+      "kırmızı plak",
+      "kaşıntı",
+      "kalınlaşmış deri",
+      "kabuklanma",
+      "Auspitz belirtisi",
+      "tırnak çukurlanması",
+      "eklem ağrısı",
+      "kuru cilt"
+    ],
+    "locations": ["dirsek", "diz", "saçlı deri", "bel alt bölgesi", "tırnak", "el"],
+    "risk_level": "orta",
+    "description": "Gümüş beyaz skuamlarla kaplı kırmızı plaklarla karakterize kronik otoimmün inflamatuar deri hastalığı."
+  },
+  {
+    "id": "liken_planus",
+    "name": "Liken Planus",
+    "group": "Psoriazis, Liken Planus ve İlişkili Hastalıklar",
+    "group_id": 15,
+    "symptoms": [
+      "mor papül",
+      "poligonal lezyon",
+      "kaşıntı",
+      "Wickham çizgileri",
+      "düz başlı papül",
+      "ağız içi beyaz lezyon",
+      "tırnak hasarı",
+      "hiperpigmentasyon"
+    ],
+    "locations": ["bilek", "ayak bileği", "ön kol", "ağız içi", "genital bölge", "saçlı deri"],
+    "risk_level": "düşük",
+    "description": "Deri ve mukozalarda mor, kaşıntılı, poligonal papüllerle seyreden kronik inflamatuar hastalık."
+  },
+  {
+    "id": "skabiyez",
+    "name": "Skabiyez (Uyuz)",
+    "group": "Skabiyez, Lyme Hastalığı ve Diğer Enfestasyonlar ve Isırıklar",
+    "group_id": 16,
+    "symptoms": [
+      "yoğun kaşıntı",
+      "gece kaşıntısı",
+      "tünel lezyonu",
+      "papül",
+      "vezikül",
+      "kaşıma izleri",
+      "kabuklanma",
+      "yaygın döküntü"
+    ],
+    "locations": ["parmak araları", "bilek", "dirsek", "koltuk altı", "bel", "genital bölge", "karın"],
+    "risk_level": "düşük",
+    "description": "Sarcoptes scabiei akarının neden olduğu, yoğun kaşıntı ile seyreden bulaşıcı deri enfestasyonu."
+  },
+  {
+    "id": "bocek_isirigi_dermatiti",
+    "name": "Böcek Isırığı Dermatiti",
+    "group": "Skabiyez, Lyme Hastalığı ve Diğer Enfestasyonlar ve Isırıklar",
+    "group_id": 16,
+    "symptoms": [
+      "kaşıntı",
+      "kızarıklık",
+      "papül",
+      "şişlik",
+      "merkezi nokta",
+      "ürtikeryal reaksiyon",
+      "bül",
+      "çizgisel dizilim"
+    ],
+    "locations": ["kol", "bacak", "ayak bileği", "boyun", "yüz", "gövde"],
+    "risk_level": "düşük",
+    "description": "Böcek ısırıkları veya sokmaları sonucu gelişen lokal veya yaygın deri reaksiyonu."
+  },
+  {
+    "id": "seboreik_keratoz",
+    "name": "Seboreik Keratoz",
+    "group": "Seboreik Keratoz ve Diğer Benign Tümörler",
+    "group_id": 17,
+    "symptoms": [
+      "yapışık görünümlü lezyon",
+      "kahverengi plak",
+      "mumsu yüzey",
+      "pürüzlü yapı",
+      "keskin sınır",
+      "yavaş büyüme",
+      "koyu renk",
+      "kaşıntı"
+    ],
+    "locations": ["gövde", "yüz", "sırt", "göğüs", "omuz", "kol"],
+    "risk_level": "düşük",
+    "description": "Yaşla birlikte sık görülen, 'yapışık' görünümde iyi huylu epidermal tümör."
+  },
+  {
+    "id": "dermatofibrom",
+    "name": "Dermatofibrom",
+    "group": "Seboreik Keratoz ve Diğer Benign Tümörler",
+    "group_id": 17,
+    "symptoms": [
+      "sert nodül",
+      "kahverengi papül",
+      "sıkıştırınca çukurlaşma",
+      "ağrısız lezyon",
+      "yavaş büyüme",
+      "sabit boyut",
+      "hiperpigmentasyon"
+    ],
+    "locations": ["bacak", "kol", "gövde"],
+    "risk_level": "düşük",
+    "description": "Dermiste sert, küçük, kahverengi iyi huylu fibroz tümör."
+  },
+  {
+    "id": "lipom",
+    "name": "Lipom",
+    "group": "Seboreik Keratoz ve Diğer Benign Tümörler",
+    "group_id": 17,
+    "symptoms": [
+      "yumuşak kitle",
+      "hareketli nodül",
+      "cilt altı şişlik",
+      "ağrısız kitle",
+      "lastik kıvamı",
+      "yavaş büyüme"
+    ],
+    "locations": ["kol", "sırt", "boyun", "omuz", "karın", "uyluk"],
+    "risk_level": "düşük",
+    "description": "Yağ dokusundan oluşan, yumuşak, hareketli, iyi huylu cilt altı tümörü."
+  },
+  {
+    "id": "diyabetik_dermopati",
+    "name": "Diyabetik Dermopati",
+    "group": "Sistemik Hastalık",
+    "group_id": 18,
+    "symptoms": [
+      "kahverengi yama",
+      "atrofik lezyon",
+      "yuvarlak plak",
+      "skar benzeri lezyon",
+      "ağrısız leke",
+      "bilateral yerleşim"
+    ],
+    "locations": ["ön bacak (tibia)", "ayak", "ön kol", "uyluk"],
+    "risk_level": "orta",
+    "description": "Diyabete bağlı mikrovasküler değişiklikler sonucu bacaklarda kahverengi atrofik lezyonlar."
+  },
+  {
+    "id": "tinea_korporis",
+    "name": "Tinea Korporis (Saçkıran)",
+    "group": "Tinea, Kandidiyazis ve Diğer Fungal Enfeksiyonlar",
+    "group_id": 19,
+    "symptoms": [
+      "halka şeklinde lezyon",
+      "kenar yükselmesi",
+      "merkezi açılma",
+      "kaşıntı",
+      "pullanma",
+      "kızarıklık",
+      "yayılma"
+    ],
+    "locations": ["gövde", "kol", "bacak", "yüz", "boyun"],
+    "risk_level": "düşük",
+    "description": "Dermatofit mantarların neden olduğu, halka şeklinde kaşıntılı lezyonlarla seyreden fungal enfeksiyon."
+  },
+  {
+    "id": "tinea_pedis",
+    "name": "Tinea Pedis (Atlet Ayağı)",
+    "group": "Tinea, Kandidiyazis ve Diğer Fungal Enfeksiyonlar",
+    "group_id": 19,
+    "symptoms": [
+      "parmak arası soyulma",
+      "kaşıntı",
+      "yanma",
+      "kötü koku",
+      "çatlak",
+      "pullanma",
+      "vezikül",
+      "nemli maserasyon"
+    ],
+    "locations": ["ayak tabanı", "parmak araları", "ayak kenarı"],
+    "risk_level": "düşük",
+    "description": "Ayakları etkileyen yaygın fungal enfeksiyon; sıcak ve nemli ortamlarda sık görülür."
+  },
+  {
+    "id": "kutanoz_kandidiyazis",
+    "name": "Kutanöz Kandidiyazis",
+    "group": "Tinea, Kandidiyazis ve Diğer Fungal Enfeksiyonlar",
+    "group_id": 19,
+    "symptoms": [
+      "kırmızı yama",
+      "satellit püstül",
+      "kaşıntı",
+      "yanma",
+      "nemli erozyon",
+      "maserasyon",
+      "beyaz plak",
+      "ağrı"
+    ],
+    "locations": ["kasık", "koltuk altı", "meme altı", "parmak araları", "ağız içi", "genital bölge"],
+    "risk_level": "düşük",
+    "description": "Candida mantarının neden olduğu, nemli kıvrım bölgelerinde sık görülen yüzeyel deri enfeksiyonu."
+  },
+  {
+    "id": "akut_urtiker",
+    "name": "Akut Ürtiker",
+    "group": "Ürtiker (Kurdeşen)",
+    "group_id": 20,
+    "symptoms": [
+      "kaşıntılı kabarıklık",
+      "kırmızı plak",
+      "yer değiştiren lezyon",
+      "anjioödem",
+      "yanma hissi",
+      "hızlı başlangıç",
+      "birkaç saat içinde gerileme"
+    ],
+    "locations": ["tüm vücut", "yüz", "gövde", "kol", "bacak", "dudak", "göz kapağı"],
+    "risk_level": "orta",
+    "description": "6 haftadan kısa süren, kaşıntılı kabarık lezyonlarla seyreden alerjik deri reaksiyonu."
+  },
+  {
+    "id": "kronik_urtiker",
+    "name": "Kronik Ürtiker",
+    "group": "Ürtiker (Kurdeşen)",
+    "group_id": 20,
+    "symptoms": [
+      "tekrarlayan kabarıklık",
+      "kronik kaşıntı",
+      "yer değiştiren plak",
+      "anjioödem",
+      "günlük atak",
+      "uyku bozukluğu",
+      "yanma hissi"
+    ],
+    "locations": ["tüm vücut", "gövde", "kol", "bacak", "yüz"],
+    "risk_level": "orta",
+    "description": "6 haftadan uzun süren, neredeyse her gün ortaya çıkan kronik kaşıntılı kabarıklıklar."
+  },
+  {
+    "id": "hemanjiom",
+    "name": "Hemanjiom",
+    "group": "Vasküler Tümörler",
+    "group_id": 21,
+    "symptoms": [
+      "kırmızı kabarık lezyon",
+      "çilek görünümü",
+      "hızlı büyüme dönemi",
+      "yumuşak kitle",
+      "mor-kırmızı renk",
+      "spontan gerileme",
+      "basınçla solan"
+    ],
+    "locations": ["yüz", "saçlı deri", "sırt", "göğüs", "kol", "bacak"],
+    "risk_level": "düşük",
+    "description": "Kan damarlarından köken alan, bebeklerde sık görülen iyi huylu vasküler tümör."
+  },
+  {
+    "id": "piyojenik_granulom",
+    "name": "Piyojenik Granülom",
+    "group": "Vasküler Tümörler",
+    "group_id": 21,
+    "symptoms": [
+      "hızlı büyüyen nodül",
+      "kolay kanama",
+      "kırmızı parlak lezyon",
+      "saplı lezyon",
+      "nemli yüzey",
+      "ülserasyon"
+    ],
+    "locations": ["parmak", "dudak", "yüz", "diş eti", "el", "kol"],
+    "risk_level": "düşük",
+    "description": "Hızlı büyüyen, kolay kanayan vasküler proliferasyon; travma veya gebelikle ilişkili olabilir."
+  },
+  {
+    "id": "kutanoz_vaskulit",
+    "name": "Kutanöz Vaskülit",
+    "group": "Vaskülit",
+    "group_id": 22,
+    "symptoms": [
+      "palpabl purpura",
+      "kırmızı-mor papül",
+      "ülserasyon",
+      "ağrı",
+      "nodül",
+      "livedo retikülaris",
+      "nekroz",
+      "peteşi"
+    ],
+    "locations": ["alt bacak", "ayak bileği", "ayak", "kalça", "gövde"],
+    "risk_level": "orta",
+    "description": "Deri damarlarının iltihaplanması sonucu purpura ve ülserasyonlarla seyreden vasküler hastalık."
+  },
+  {
+    "id": "sirt_sigil",
+    "name": "Verruka Vulgaris (Siğil)",
+    "group": "Siğil, Molluskum ve Diğer Viral Enfeksiyonlar",
+    "group_id": 23,
+    "symptoms": [
+      "sert papül",
+      "pürüzlü yüzey",
+      "karnabahar görünümü",
+      "siyah nokta",
+      "ağrı",
+      "cilt renkli çıkıntı",
+      "kümelenme"
+    ],
+    "locations": ["el", "parmak", "tırnak çevresi", "ayak tabanı", "diz", "dirsek", "yüz"],
+    "risk_level": "düşük",
+    "description": "HPV'nin neden olduğu, pürüzlü yüzeyli iyi huylu deri çıkıntıları."
+  },
+  {
+    "id": "molluskum_kontagiozum",
+    "name": "Molluskum Kontagiozum",
+    "group": "Siğil, Molluskum ve Diğer Viral Enfeksiyonlar",
+    "group_id": 23,
+    "symptoms": [
+      "göbekli papül",
+      "parlak yüzey",
+      "cilt renkli lezyon",
+      "küçük kubbe şeklinde papül",
+      "sıkıştırınca beyaz materyal",
+      "kümelenme",
+      "kaşıntı"
+    ],
+    "locations": ["gövde", "koltuk altı", "kol", "bacak", "yüz", "genital bölge"],
+    "risk_level": "düşük",
+    "description": "Poxvirüsün neden olduğu, merkezi göbekli papüllerle seyreden bulaşıcı viral deri enfeksiyonu."
+  }
+]
