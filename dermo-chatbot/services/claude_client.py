@@ -7,7 +7,7 @@ from typing import Optional
 
 import anthropic
 
-MODEL = "claude-opus-4-6"
+MODEL = "claude-haiku-4-5"
 
 client = anthropic.Anthropic()
 
