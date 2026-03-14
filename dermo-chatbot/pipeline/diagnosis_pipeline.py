@@ -1,4 +1,10 @@
-"""End-to-end diagnosis pipeline: symptom → group prediction → filter → Claude reasoning → result."""
+"""End-to-end diagnosis pipeline: symptom → group prediction → filter → Claude reasoning → result.
+
+When an image is provided the pipeline runs two models in parallel:
+  1. DermLIP (visual CLIP model)  → top-k predictions from the skin image
+  2. Claude  (text-based reasoning) → top-3 conditions from symptom text
+Claude then synthesises both results into a single unified answer.
+"""
 
 import json
 import re
@@ -13,6 +19,14 @@ from services.disease_filter import (
 )
 from services.symptom_parser import SymptomState, update_symptom_state
 from chat.conversation_manager import ConversationManager, DISCLAIMER
+
+# DermLIP is optional — gracefully degrade if not available (e.g. missing torch)
+try:
+    from services import dermlip_client as _dermlip
+    _HAS_DERMLIP = True
+except ImportError:
+    _dermlip = None  # type: ignore[assignment]
+    _HAS_DERMLIP = False
 
 
 def _parse_claude_json(raw: str) -> dict:
@@ -43,8 +57,26 @@ def process_user_message(
 
     Returns the assistant's reply (string, Turkish).
     """
-    # 1. Add user message to history (image embedded in content when provided)
+    # 1. Add user message to history
     manager.add_user_message(user_input, image_b64=image_b64, media_type=media_type)
+
+    # 1b. Run DermLIP immediately if a new image was provided
+    if image_b64 and not manager.visual_predictions and _HAS_DERMLIP and _dermlip.is_loaded():
+        try:
+            manager.visual_predictions = _dermlip.predict_from_b64(image_b64, top_k=5)
+        except Exception as e:
+            print(f"[DermLIP] Visual prediction failed: {e}")
+    elif image_path and not manager.visual_predictions and _HAS_DERMLIP and _dermlip.is_loaded():
+        try:
+            manager.visual_predictions = _dermlip.predict_from_path(image_path, top_k=5)
+        except Exception as e:
+            print(f"[DermLIP] Visual prediction failed: {e}")
+
+    if manager.visual_predictions:
+        print("\n[DermLIP] Visual predictions:")
+        for i, p in enumerate(manager.visual_predictions, 1):
+            print(f"  {i}. {p['condition']:30s} confidence: {p['confidence']:.4f}")
+        print()
 
     # 2. Claude slot filling on current message (handles morphology, synonyms, slang)
     raw_slots = claude_client.extract_slots_from_message(user_input)
@@ -66,12 +98,7 @@ def process_user_message(
 
     # 4. Decide: proceed to diagnosis or ask follow-up?
     if manager.should_proceed_to_diagnosis() and not manager.diagnosis_done:
-        reply = _run_diagnosis(
-            manager,
-            image_path=image_path,
-            image_b64=manager.image_b64,
-            media_type=manager.image_media_type,
-        )
+        reply = _run_diagnosis(manager)
         manager.diagnosis_done = True
     else:
         # Run group prediction early (even before diagnosis) to enable targeted questions
@@ -96,49 +123,75 @@ def _run_conversational_turn(manager: ConversationManager) -> str:
     return response + DISCLAIMER
 
 
-def _run_diagnosis(
-    manager: ConversationManager,
-    image_path: Optional[str] = None,
-    image_b64: Optional[str] = None,
-    media_type: str = "image/jpeg",
-) -> str:
+def _run_diagnosis(manager: ConversationManager) -> str:
     """
-    Two-stage diagnosis:
+    Diagnosis pipeline with dual-model support:
+
+    **Without image** (text-only):
       Stage 1 — Claude predicts the most likely disease groups.
       Stage 2 — Claude reasons over diseases filtered to those groups.
-    Falls back to all diseases if group prediction returns nothing.
+
+    **With image** (dual-model):
+      DermLIP predictions are already stored in manager.visual_predictions.
+      Claude text reasoning runs separately, then both are synthesised.
     """
     state: SymptomState = manager.symptom_state
 
-    # Stage 1: group prediction (reuse if already predicted in follow-up phase)
+    # ── Stage 1: group prediction (reuse if already predicted) ────────────
     if not manager.predicted_group_ids:
         group_ids = claude_client.predict_groups(state.to_text(), get_all_groups())
         manager.predicted_group_ids = group_ids
 
     if manager.predicted_group_ids:
         candidate_diseases = get_diseases_by_group_ids(manager.predicted_group_ids)
-        # Safety net: if filtering yields < 3 diseases, fall back to all
         if len(candidate_diseases) < 3:
             candidate_diseases = get_all_diseases_for_claude()
     else:
         candidate_diseases = get_all_diseases_for_claude()
 
-    # Stage 2: reasoning over candidates
+    # ── Dual-model path (visual predictions available) ────────────────────
+    if manager.visual_predictions:
+        # Claude text-based reasoning (WITHOUT image — text analysis only)
+        raw_text_result = claude_client.reason_over_diseases(
+            symptoms_text=state.to_text(),
+            all_diseases=candidate_diseases,
+        )
+        text_result = _parse_claude_json(raw_text_result)
+
+        # Synthesise DermLIP visual + Claude text predictions
+        raw_synth = claude_client.synthesize_predictions(
+            symptoms_text=state.to_text(),
+            visual_predictions=manager.visual_predictions,
+            text_conditions=text_result.get("conditions", []),
+            next_questions=text_result.get("next_questions", []),
+        )
+        result = _parse_claude_json(raw_synth)
+        return _format_diagnosis_result(result, dual_model=True)
+
+    # ── Text-only path (no image or DermLIP unavailable) ──────────────────
+    # Image is never sent to Claude — only DermLIP handles visual analysis.
     raw_result = claude_client.reason_over_diseases(
         symptoms_text=state.to_text(),
         all_diseases=candidate_diseases,
-        image_b64=image_b64,
-        image_path=image_path,
-        media_type=media_type,
     )
-
     result = _parse_claude_json(raw_result)
+    return _format_diagnosis_result(result, dual_model=False)
+
+
+def _format_diagnosis_result(result: dict, dual_model: bool = False) -> str:
+    """Format a diagnosis result dict into a user-facing Turkish string."""
     conditions = result.get("conditions", [])
     next_questions = result.get("next_questions", [])
 
     RISK_LABEL = {"yüksek": "🔴 Yüksek", "orta": "🟡 Orta", "düşük": "🟢 Düşük"}
 
-    lines = ["Verdiğiniz bilgilere göre olası dermatolojik durumlar:\n"]
+    lines = []
+    if dual_model:
+        lines.append(
+            "Görüntü analizi (yapay zeka görsel modeli) ve semptom analizi (metin tabanlı klinik değerlendirme) "
+            "birlikte değerlendirilmiştir.\n"
+        )
+    lines.append("Verdiğiniz bilgilere göre olası dermatolojik durumlar:\n")
 
     for i, cond in enumerate(conditions, 1):
         name = cond.get("name", "Bilinmiyor")
@@ -177,7 +230,9 @@ def get_diagnosis_result_json(
 ) -> dict:
     """
     Stateless version for the /diagnose API endpoint.
-    Uses two-stage pipeline: group prediction → filtered reasoning.
+    Uses dual-model pipeline when an image is provided:
+      - DermLIP visual predictions + Claude text reasoning → synthesis.
+    Falls back to text-only when no image or DermLIP unavailable.
     Returns raw structured JSON: {conditions, next_questions}.
     """
     group_ids = claude_client.predict_groups(state.to_text(), get_all_groups())
@@ -188,11 +243,40 @@ def get_diagnosis_result_json(
     else:
         candidate_diseases = get_all_diseases_for_claude()
 
+    has_image = bool(image_b64 or image_path)
+
+    # Dual-model path
+    if has_image and _HAS_DERMLIP and _dermlip.is_loaded():
+        visual_predictions: list[dict] = []
+        try:
+            if image_b64:
+                visual_predictions = _dermlip.predict_from_b64(image_b64, top_k=5)
+            elif image_path:
+                visual_predictions = _dermlip.predict_from_path(image_path, top_k=5)
+        except Exception as e:
+            print(f"[DermLIP] Visual prediction failed: {e}")
+
+        # Claude text reasoning (without image)
+        raw_text = claude_client.reason_over_diseases(
+            symptoms_text=state.to_text(),
+            all_diseases=candidate_diseases,
+        )
+        text_result = _parse_claude_json(raw_text)
+
+        if visual_predictions:
+            raw_synth = claude_client.synthesize_predictions(
+                symptoms_text=state.to_text(),
+                visual_predictions=visual_predictions,
+                text_conditions=text_result.get("conditions", []),
+                next_questions=text_result.get("next_questions", []),
+            )
+            return _parse_claude_json(raw_synth)
+
+        return text_result
+
+    # Text-only path — image is never sent to Claude
     raw_result = claude_client.reason_over_diseases(
         symptoms_text=state.to_text(),
         all_diseases=candidate_diseases,
-        image_b64=image_b64,
-        image_path=image_path,
-        media_type=media_type,
     )
     return _parse_claude_json(raw_result)

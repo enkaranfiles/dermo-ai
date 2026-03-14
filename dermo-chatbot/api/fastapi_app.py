@@ -1,6 +1,7 @@
 """FastAPI REST API for the dermatology chatbot."""
 
 import uuid
+from contextlib import asynccontextmanager
 from pathlib import Path
 from dotenv import load_dotenv
 load_dotenv()  # loads ANTHROPIC_API_KEY from .env
@@ -16,10 +17,28 @@ from chat.conversation_manager import ConversationManager
 from pipeline.diagnosis_pipeline import process_user_message, get_diagnosis_result_json
 from services.symptom_parser import SymptomState
 
+# DermLIP is optional — app works without it (text-only mode)
+try:
+    from services import dermlip_client
+    _HAS_DERMLIP = True
+except ImportError:
+    dermlip_client = None  # type: ignore[assignment]
+    _HAS_DERMLIP = False
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Load heavy models at startup."""
+    if _HAS_DERMLIP:
+        dermlip_client.init_dermlip()
+    yield
+
+
 app = FastAPI(
     title="Dermatoloji Chatbot API",
     description="Türkçe dermatoloji bilgi asistanı — PoC",
     version="0.1.0",
+    lifespan=lifespan,
 )
 
 app.add_middleware(
@@ -172,7 +191,12 @@ def diagnose(req: DiagnoseRequest):
 
 @app.get("/health", tags=["System"])
 def health():
-    return {"status": "ok", "service": "dermo-chatbot"}
+    dermlip_loaded = _HAS_DERMLIP and dermlip_client.is_loaded()
+    return {
+        "status": "ok",
+        "service": "dermo-chatbot",
+        "dermlip_loaded": dermlip_loaded,
+    }
 
 
 @app.delete("/chat/{session_id}", tags=["Chat"])

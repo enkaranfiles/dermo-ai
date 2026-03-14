@@ -252,6 +252,88 @@ MUTLAKA aşağıdaki JSON formatında yanıt ver (başka hiçbir şey ekleme):
     return '{"candidate_conditions": []}'
 
 
+def synthesize_predictions(
+    symptoms_text: str,
+    visual_predictions: list[dict],
+    text_conditions: list[dict],
+    next_questions: list[str],
+) -> str:
+    """
+    Synthesize DermLIP visual model predictions and Claude text-based predictions
+    into a single unified analysis. Returns Turkish natural-language text.
+    """
+    import json as _json
+
+    visual_text = "\n".join(
+        f"  - {p['condition']} (güven: %{int(p['confidence'] * 100)})"
+        for p in visual_predictions
+    )
+    text_text = "\n".join(
+        f"  - {c['name']} (güven: %{int(c.get('confidence', 0) * 100)}) — {c.get('reason', '')}"
+        for c in text_conditions
+    )
+    questions_text = "\n".join(f"  - {q}" for q in next_questions) if next_questions else "Yok"
+
+    prompt = f"""Sen temkinli ve kullanıcı odaklı çalışan bir dermatoloji bilgi asistanısın.
+İki farklı kaynaktan gelen analiz sonuçlarını birleştirip kullanıcıya tek bir tutarlı yanıt üretmen gerekiyor.
+
+KAYNAK 1 — GÖRÜNTÜ ANALİZİ (DermLIP görsel yapay zeka modeli):
+Bu sonuçlar yüklenen cilt görüntüsünün bir yapay zeka modeli tarafından görsel olarak analiz edilmesiyle elde edilmiştir.
+{visual_text}
+
+KAYNAK 2 — METİN ANALİZİ (Semptom tabanlı klinik değerlendirme):
+Bu sonuçlar kullanıcının anlattığı semptomların klinik bilgi tabanı ile eşleştirilmesiyle elde edilmiştir.
+{text_text}
+
+SEMPTOM DURUMU:
+{symptoms_text}
+
+ÖNERİLEN SORULAR (metin analizinden):
+{questions_text}
+
+GÖREV:
+Her iki kaynağın sonuçlarını birleştirerek kullanıcıya en olası 3 dermatolojik durumu sun.
+
+BİRLEŞTİRME KURALLARI:
+- Her iki kaynakta da yüksek çıkan durumlar daha güvenilirdir — bunları öne çıkar.
+- Yalnızca bir kaynakta yüksek çıkan durumları da dahil et ancak güven düzeyini buna göre ayarla.
+- İki kaynak çelişiyorsa, her ikisini de belirt ve kullanıcıya netleştirici soru öner.
+- Görsel model sonuçları yalnızca görüntü kalitesi iyiyse güvenilirdir; bunu göz önünde bulundur.
+- Malign durumları yalnızca her iki kaynakta da destekleniyorsa üst sıralara koy.
+
+KULLANICI DİLİ KURALI:
+- Tıbbi jargon kullanma, sade Türkçe yaz.
+- Kullanıcıya panik yaratma.
+- Bu bir tıbbi teşhis değil, bilgilendirmedir.
+
+ÇIKTI KURALLARI:
+- En fazla 3 durum seç
+- confidence: 0.0 ile 1.0 arasında sayı
+- reason: Türkçe, kısa, 1-2 cümle. Hangi kaynağın (görsel/metin/her ikisi) bu durumu desteklediğini belirt.
+- next_questions: Türkçe, ayırıcı tanıya yardımcı 2-3 soru
+- Yalnızca geçerli JSON döndür, başka metin yazma
+
+JSON formatı:
+{{
+  "conditions": [
+    {{"name": "...", "confidence": 0.82, "reason": "..."}},
+    {{"name": "...", "confidence": 0.61, "reason": "..."}},
+    {{"name": "...", "confidence": 0.37, "reason": "..."}}
+  ],
+  "next_questions": ["Soru 1?", "Soru 2?"]
+}}"""
+
+    response = client.messages.create(
+        model=MODEL,
+        max_tokens=1024,
+        messages=[{"role": "user", "content": prompt}],
+    )
+    for block in response.content:
+        if block.type == "text":
+            return block.text
+    return '{"conditions": [], "next_questions": []}'
+
+
 def extract_slots_from_message(user_message: str) -> str:
     """
     Claude-based slot filling on a single user message.

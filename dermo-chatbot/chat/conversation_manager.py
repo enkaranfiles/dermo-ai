@@ -42,6 +42,8 @@ class ConversationManager:
     image_media_type: str = "image/jpeg"
     # Stage-1 predicted group IDs (set after first group prediction)
     predicted_group_ids: list[int] = field(default_factory=list)
+    # DermLIP visual predictions (set when an image is analysed)
+    visual_predictions: list[dict] = field(default_factory=list)
 
     def add_user_message(
         self,
@@ -49,25 +51,12 @@ class ConversationManager:
         image_b64: Optional[str] = None,
         media_type: str = "image/jpeg",
     ) -> None:
+        # Image is never sent to Claude — DermLIP handles visual analysis.
+        # We only store it for the DermLIP prediction step.
         if image_b64:
-            # Build multimodal content so Claude sees the image in every turn
-            content: list[dict] = [
-                {
-                    "type": "image",
-                    "source": {
-                        "type": "base64",
-                        "media_type": media_type,
-                        "data": image_b64,
-                    },
-                },
-                {"type": "text", "text": text},
-            ]
-            self.messages.append({"role": "user", "content": content})
-            # Persist for later diagnosis call
             self.image_b64 = image_b64
             self.image_media_type = media_type
-        else:
-            self.messages.append({"role": "user", "content": text})
+        self.messages.append({"role": "user", "content": text})
         self.turn_count += 1
 
     def add_assistant_message(self, text: str) -> None:
@@ -77,7 +66,25 @@ class ConversationManager:
         return self.messages
 
     def get_system_prompt(self) -> str:
-        return SYSTEM_PROMPT
+        prompt = SYSTEM_PROMPT
+        if self.visual_predictions:
+            preds_text = "\n".join(
+                f"  - {p['condition']} (güven: %{int(p['confidence'] * 100)})"
+                for p in self.visual_predictions
+            )
+            prompt += f"""
+
+GÖRÜNTÜ ANALİZİ SONUÇLARI:
+Kullanıcı bir cilt görüntüsü yükledi. Görüntü, DermLIP adlı bir yapay zeka görsel modeli tarafından analiz edildi.
+Modelin tahminleri (en olasıdan en az olasıya):
+{preds_text}
+
+Bu sonuçları göz önünde bulundurarak:
+- Kullanıcıya görüntüsünün alındığını ve analiz edildiğini belirt.
+- Bu tahminleri doğrudan kullanıcıya söyleme, ancak yönlendirici sorular sormak için kullan.
+- Tahminleri netleştirmek için ayırıcı sorular sor (örn. kaşıntı, süre, dağılım).
+- Kesin tanı koyma, yalnızca bilgi ver."""
+        return prompt
 
     def build_greeting(self) -> str:
         return (

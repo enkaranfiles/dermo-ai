@@ -22,6 +22,13 @@ def run_cli(image_path: str | None = None) -> None:
     from chat.conversation_manager import ConversationManager
     from pipeline.diagnosis_pipeline import process_user_message
 
+    # Load DermLIP for image analysis if available
+    try:
+        from services import dermlip_client
+        dermlip_client.init_dermlip()
+    except ImportError:
+        print("⚠️  DermLIP modeli yüklenemedi (torch/open_clip eksik). Yalnızca metin analizi kullanılacak.")
+
     manager = ConversationManager()
 
     # Print greeting
